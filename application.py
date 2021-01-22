@@ -1,15 +1,9 @@
 import os
 from typing import List
 import random
+from flask import Flask, render_template, request
 
-
-def name_generator():
-    bank = prepare_bank_list()
-
-    adjective = random.sample(bank["adjectives"], 1)[0]
-    lizard = random.sample(bank["lizards"], 1)[0]
-
-    print(f"{adjective} {lizard}")
+app = Flask(__name__, template_folder="templates")
 
 
 def prepare_bank_list():
@@ -42,9 +36,32 @@ def _tunnel(path: str, prepend: str = "") -> List[str]:
             bank += _tunnel(f"{path}/{item}", f"{prepend}/{item}")
     return bank
 
+
 def get_file_name(file_path):
     file_path = file_path.split(".")[0]
     return file_path.split("/")[-1]
 
+
+BANK = prepare_bank_list()
+
+
+@app.route("/", methods=["GET"])
+def homepage():
+    return render_template("index.html.jinja2")
+
+
+@app.route("/", methods=["POST"])
+def name_generator():
+    category_1 = request.form.get("category_1", "adjectives")
+    category_2 = request.form.get("category_2", "lizards")
+
+    word_1 = random.sample(BANK[category_1], 1)[0]
+    word_2 = random.sample(BANK[category_2], 1)[0]
+
+    name = f"{word_1} {word_2}"
+
+    return render_template("index.html.jinja2", name=name)
+
+
 if __name__ == "__main__":
-    name_generator()
+    app.run()

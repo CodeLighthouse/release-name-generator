@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<form action="/" method="POST">
+    <label for="fname">First category:</label><br>
+    <input type="text" id="fname" name="category_1" value="adjectives"><br>
+    <label for="lname">Second category:</label><br>
+    <input type="text" id="lname" name="category_2" value="lizards"><br><br>
+    <input type="submit" value="Submit">
+</form>
+
+{% if name %}
+    <p>release name: {{ name }}</p>
+{% endif %}
+
+</body>
+</html>
