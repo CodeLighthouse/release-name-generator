@@ -45,9 +45,32 @@ def get_file_name(file_path):
 BANK = prepare_bank_list()
 
 
+def list_categories(dictionary, prepend=""):
+    categories = []
+
+    for k, v in dictionary.items():
+        categories.append(f"{prepend}{k}")
+        if type(v) == dict:
+            categories += list_categories(v, f"{prepend}\t")
+
+    return categories
+
+
+CATEGORIES = list_categories(BANK)
+
+
+def select_category():
+    category = random.sample(CATEGORIES, 1)[0]
+    if category == "adjectives":
+        # PREVENTS SELECT_CATEGORY FROM EVER RETURNING "ADJECTIVES"
+        return select_category()
+    else:
+        return category
+
+
 @app.route("/", methods=["GET"])
 def homepage():
-    return render_template("index.html.jinja2")
+    return render_template("index.html.jinja2", categories=CATEGORIES, selected_category=select_category())
 
 
 @app.route("/", methods=["POST"])
@@ -60,7 +83,7 @@ def name_generator():
 
     name = f"{word_1} {word_2}"
 
-    return render_template("index.html.jinja2", name=name)
+    return render_template("index.html.jinja2", name=name, categories=CATEGORIES, selected_category=select_category())
 
 
 if __name__ == "__main__":
