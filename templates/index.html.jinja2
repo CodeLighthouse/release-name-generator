@@ -6,13 +6,13 @@
     <label for="category_1">First category:</label>
     <select name="category_1" id="category_1">
         {% for i in categories %}
-            <option value="{{ i.replace("\t", "") }}" {{ "selected" if i == "adjectives" }}>{{ i.replace("\t", "  ") }}</option>
+            <option value="{{ i }}" {{ "selected" if i == "adjectives" }}>{{ i }}</option>
         {% endfor %}
     </select>
     <label for="category_2">Second category:</label>
         <select name="category_2" id="category_2">
             {% for i in categories %}
-                <option value="{{ i.replace("\t", "") }}" {{ "selected" if i == selected_category }}>{{ i.replace("\t", "  ") }}</option>
+                <option value="{{ i }}" {{ "selected" if i == selected_category }}>{{ i }}</option>
             {% endfor %}
         </select>
     <input type="submit" value="Submit">
